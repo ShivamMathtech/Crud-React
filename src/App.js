@@ -43,14 +43,19 @@ function App() {
     }
   };
   let Prev = (e) => {
-    // getStudents(studentData.meta.pagination.page - 1);
+    // getStudents(studentData.meta.pagination.pageCount);
+
     if (studentData.meta.pagination.page > 1) {
-      // getStudents(studentData.meta.pagination.page);
-      console.log(st);
-      studentData.meta.pagination.page -= 1;
+      getStudents(studentData.meta.pagination.page - 1);
+      // console.log(studentData.meta.pagination.pageCount);
+      studentData.meta.pagination.pageCount -= 1;
     }
   };
-  let First = (e) => {};
+  let First = (e) => {
+    if (studentData.meta.pagination.page !== 1) {
+      getStudents(1);
+    }
+  };
   return (
     <>
       <h1 className="text-center p-2">Crud Operation</h1>
