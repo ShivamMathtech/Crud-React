@@ -14,7 +14,6 @@ function App() {
         .then((data) => {
           // now set the student data in hook variables
           setStudentData(data);
-          console.log("Data fetched successfully: ", studentData);
         })
         .catch((err) => {
           console.error("Error fetching data: ", err);
@@ -49,7 +48,15 @@ function App() {
                 <td>{currrVal.id}</td>
                 <td>{currrVal.name}</td>
                 <td>
-                  <Button variant="danger">Delete</Button>
+                  <Button variant="danger" className="m-2 btn-sm">
+                    Delete
+                  </Button>
+                  <Button variant="info" className="m-2 btn-sm">
+                    Edit
+                  </Button>
+                  <Button variant="success" className="m-2 btn-sm">
+                    Add
+                  </Button>
                 </td>
               </tr>
             );
