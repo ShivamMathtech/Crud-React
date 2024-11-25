@@ -7,7 +7,7 @@ function App() {
   const [studentData, setStudentData] = useState({
     data: [],
   }); // Empty array
-
+  const [paginationItem, setPaginationItem] = useState([]); // Empty array
   let getStudents = (pageno = 1) => {
     try {
       fetch(
@@ -17,6 +17,22 @@ function App() {
         .then((data) => {
           // now set the student data in hook variables
           setStudentData(data);
+          var start = data.meta.pagination.page;
+          var arr = [];
+          for (start; start <= data.meta.pagination.pageCount; start++) {
+            arr.push(
+              <Pagination.Item
+                onClick={(e) => {
+                  goTOPage(e);
+                }}
+                size="sm"
+              >
+                {start}
+              </Pagination.Item>
+            );
+          }
+
+          setPaginationItem(arr);
         })
         .catch((err) => {
           console.error("Error fetching data: ", err);
@@ -25,13 +41,22 @@ function App() {
       console.error("Error loading data: ", e);
     }
   };
+  let goTOPage = (e) => {
+    // console.log(e.target.innerHTML);
+    getStudents(e.target.innerHTML);
+  };
   let Last = (e) => {
     if (
       studentData.meta.pagination.page !== studentData.meta.pagination.pageCount
     ) {
       getStudents(studentData.meta.pagination.pageCount);
-    } else {
-      alert("Last page");
+      // let last = document.getElementById("last");
+      // console.log(studentData.meta.pagination.pageCount);
+      // if ((studentData.meta.pagination.pageCount = 3)) {
+      //   last.classList.add("disabled");
+      // } else {
+      //   last.classList.remove("disabled");
+      // }
     }
   };
   let Next = (e) => {
@@ -58,15 +83,19 @@ function App() {
   };
   return (
     <>
-      <h1 className="text-center p-2">Crud Operation</h1>
-      <Button
-        className="btn btn-success m-3"
-        onClick={(e) => {
-          getStudents();
-        }}
-      >
-        Load data
-      </Button>
+      <div className="d-flex justify-content-center">
+        <div className="text-center">
+          <h1 className="text-center p-2">Crud Operation</h1>
+          <Button
+            className="btn btn-success m-3 "
+            onClick={(e) => {
+              getStudents();
+            }}
+          >
+            Load data
+          </Button>
+        </div>
+      </div>
       {studentData.data.length > 0 && (
         <React.Fragment>
           <Table striped bordered hover>
@@ -111,16 +140,11 @@ function App() {
               }}
             />
             {/* <Pagination.Item>{1}</Pagination.Item>
-            <Pagination.Ellipsis />
-
-            <Pagination.Item>{10}</Pagination.Item>
-            <Pagination.Item>{11}</Pagination.Item>
-            <Pagination.Item active>{12}</Pagination.Item>
-            <Pagination.Item>{13}</Pagination.Item>
-            <Pagination.Item disabled>{14}</Pagination.Item>
-
-            <Pagination.Ellipsis />
-            <Pagination.Item>{20}</Pagination.Item> */}
+            <Pagination.Item>{2}</Pagination.Item>
+            <Pagination.Item>{3}</Pagination.Item> */}
+            {paginationItem.map(function (currVal, index, arr) {
+              return <Pagination.Item size="sm">{currVal}</Pagination.Item>;
+            })}
             <Pagination.Next
               onClick={(e) => {
                 Next(e);
@@ -130,6 +154,7 @@ function App() {
               onClick={(e) => {
                 Last(e);
               }}
+              id="last"
             />
           </Pagination>
         </React.Fragment>
