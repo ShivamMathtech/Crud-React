@@ -19,7 +19,7 @@ function App() {
           setStudentData(data);
           var start = data.meta.pagination.page;
           var arr = [];
-          for (start; start <= data.meta.pagination.pageCount; start++) {
+          for (start = 1; start <= 3; start++) {
             arr.push(
               <Pagination.Item
                 onClick={(e) => {
@@ -43,6 +43,7 @@ function App() {
   };
   let goTOPage = (e) => {
     // console.log(e.target.innerHTML);
+
     getStudents(e.target.innerHTML);
   };
   let Last = (e) => {
